@@ -13,6 +13,8 @@ class HomeView: UIView {
   let collectionView: UICollectionView
   let layout: UICollectionViewFlowLayout
   
+  let titles = ["Anteprime", "I più visti", "I titoli del momento"]
+  
   var movies: [Movie] = [] {
     didSet {
       collectionView.reloadData()
@@ -43,11 +45,12 @@ class HomeView: UIView {
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                  withReuseIdentifier: HeaderReusableView.reusableID)
     
+    self.collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.reusableID)
+    
     self.addSubview(collectionView)
   }
   
   private func style() {
-    self.collectionView.backgroundColor = .red
   }
   
   override func layoutSubviews() {
@@ -64,11 +67,20 @@ class HomeView: UIView {
 
 extension HomeView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.movies.count
+    return self.titles.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return UICollectionViewCell()
+    
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.reusableID, for: indexPath) as? HomeCell else {
+      fatalError()
+    }
+    
+    let title = self.titles[indexPath.row]
+    let section = Section(title: title, movies: self.movies)
+    cell.section = section
+    
+    return cell
   }
   
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

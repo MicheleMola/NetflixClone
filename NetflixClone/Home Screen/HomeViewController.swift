@@ -25,7 +25,15 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    
+    self.getMovies()
+  }
+  
+  private func getMovies() {
+    NetworkingManager().fetchAllPopularMovies { results in
+      if let movies = results {
+        self.homeView.movies = movies
+      }
+    }
   }
 
   override func loadView() {

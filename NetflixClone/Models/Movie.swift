@@ -19,3 +19,7 @@ extension Movie: Codable {
     case posterPath = "poster_path"
   }
 }
+
+struct MovieResults: Codable {
+  let results: [Movie]
+}
