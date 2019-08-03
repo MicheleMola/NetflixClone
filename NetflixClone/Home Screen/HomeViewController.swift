@@ -11,11 +11,13 @@ import UIKit
 class HomeViewController: UIViewController {
   
   let homeView = HomeView()
+  let networkingManager = NetworkingManager()
   
   init() {
     super.init(nibName: nil, bundle: nil)
     
     self.tabBarItem.title = "Home page"
+    self.tabBarItem.image = UIImage(named: "home")
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -29,7 +31,7 @@ class HomeViewController: UIViewController {
   }
   
   private func getMovies() {
-    NetworkingManager().fetchAllPopularMovies { results in
+    networkingManager.fetchAllPopularMovies { results in
       if let movies = results {
         self.homeView.movies = movies
       }

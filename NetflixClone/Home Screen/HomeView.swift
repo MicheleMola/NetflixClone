@@ -8,16 +8,29 @@
 
 import UIKit
 
+enum Direction {
+  case top
+  case bottom
+}
+
 class HomeView: UIView {
   
   let collectionView: UICollectionView
   let layout: UICollectionViewFlowLayout
   
-  let titles = ["Anteprime", "I più visti", "I titoli del momento"]
+  let titles: [SectionName] = [.preview, .popular, .hot, .comedy, .italianComedy]
   
+  let topBarView = TopBarView()
+    
   var movies: [Movie] = [] {
     didSet {
       collectionView.reloadData()
+    }
+  }
+  
+  var topBarHeight: CGFloat = 80 {
+    didSet {
+      self.animateTopBar()
     }
   }
   
@@ -41,16 +54,20 @@ class HomeView: UIView {
     
     self.collectionView.dataSource = self
     
+    self.collectionView.delegate = self
+    
     self.collectionView.register(HeaderReusableView.self,
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                  withReuseIdentifier: HeaderReusableView.reusableID)
     
     self.collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.reusableID)
     
-    self.addSubview(collectionView)
+    self.addSubview(self.collectionView)
+    self.addSubview(self.topBarView)
   }
   
   private func style() {
+    self.topBarView.clipsToBounds = true
   }
   
   override func layoutSubviews() {
@@ -61,8 +78,17 @@ class HomeView: UIView {
     
     self.layout.headerReferenceSize = CGSize(width: self.bounds.width, height: self.bounds.height * 0.7)
     self.layout.itemSize = CGSize(width: self.bounds.width, height: 150)
+    self.layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+    
+    self.topBarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.topBarHeight)
   }
   
+  func animateTopBar() {
+    self.setNeedsLayout()
+    UIView.animate(withDuration: 0.3) { [unowned self] in
+      self.layoutIfNeeded()
+    }
+  }
 }
 
 extension HomeView: UICollectionViewDataSource {
@@ -91,9 +117,27 @@ extension HomeView: UICollectionViewDataSource {
                                                                   fatalError("Wrong Header class")
     }
     
-    header.movie = Movie(title: "Lion", posterPath: "lion.jpg")
+    let randomMovie = movies.randomElement()
+    header.movie = randomMovie
     
     return header
   }
 
 }
+
+extension HomeView: UICollectionViewDelegate {}
+
+extension HomeView: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let translation = scrollView.panGestureRecognizer.translation(in: self.collectionView)
+    
+    let offsetY = scrollView.contentOffset.y
+    
+    if offsetY <= 0 { return }
+        
+    let direction: Direction = translation.y > 0 || offsetY < 50 ? .top : .bottom
+    
+    self.topBarHeight = direction == .top ? 80 : 0
+  }
+}
+

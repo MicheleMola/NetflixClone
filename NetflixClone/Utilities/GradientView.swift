@@ -13,21 +13,10 @@ class GradientView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setup()
   }
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-  }
-  
-  private func setup() {
-    autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    
-    guard let layer = self.layer as? CAGradientLayer else {
-      return
-    }
-    
-    layer.frame = self.bounds
   }
   
   func changeGradient(colors: [CGColor], locations: [NSNumber]) {
@@ -36,7 +25,6 @@ class GradientView: UIView {
     }
     
     layer.colors = colors
-    
     layer.locations = locations
   }
   

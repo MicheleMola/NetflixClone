@@ -20,6 +20,10 @@
 		DE37926622F31F3700A75581 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37926522F31F3700A75581 /* HomeCell.swift */; };
 		DE37926822F3225E00A75581 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37926722F3225E00A75581 /* MovieCell.swift */; };
 		DE37926A22F32B6400A75581 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37926922F32B6400A75581 /* Section.swift */; };
+		DE37926C22F4210700A75581 /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37926B22F4210700A75581 /* MovieViewModel.swift */; };
+		DE37926E22F4296D00A75581 /* PreviewMovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37926D22F4296D00A75581 /* PreviewMovieCell.swift */; };
+		DE37927122F46EDC00A75581 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37927022F46EDC00A75581 /* PlayButton.swift */; };
+		DE37927322F494EE00A75581 /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE37927222F494EE00A75581 /* TopBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +44,10 @@
 		DE37926522F31F3700A75581 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		DE37926722F3225E00A75581 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		DE37926922F32B6400A75581 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		DE37926B22F4210700A75581 /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
+		DE37926D22F4296D00A75581 /* PreviewMovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMovieCell.swift; sourceTree = "<group>"; };
+		DE37927022F46EDC00A75581 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
+		DE37927222F494EE00A75581 /* TopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,7 @@
 		DE37924422F2DDEC00A75581 /* NetflixClone */ = {
 			isa = PBXGroup;
 			children = (
+				DE37926F22F46EBB00A75581 /* Views */,
 				DE37926022F2F84800A75581 /* Utilities */,
 				DE37925D22F2E78900A75581 /* Models */,
 				DE37925A22F2E08900A75581 /* App */,
@@ -102,6 +111,7 @@
 				DE37925B22F2E3B400A75581 /* HeaderReusableView.swift */,
 				DE37926522F31F3700A75581 /* HomeCell.swift */,
 				DE37926722F3225E00A75581 /* MovieCell.swift */,
+				DE37926D22F4296D00A75581 /* PreviewMovieCell.swift */,
 			);
 			path = "Home Screen";
 			sourceTree = "<group>";
@@ -119,6 +129,7 @@
 			children = (
 				DE37925E22F2E83700A75581 /* Movie.swift */,
 				DE37926922F32B6400A75581 /* Section.swift */,
+				DE37926B22F4210700A75581 /* MovieViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -130,6 +141,15 @@
 				DE37926322F3185400A75581 /* NetworkingManager.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		DE37926F22F46EBB00A75581 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DE37927022F46EDC00A75581 /* PlayButton.swift */,
+				DE37927222F494EE00A75581 /* TopBarView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		EDF72434BDD5091AB014D171 /* Pods */ = {
@@ -258,11 +278,15 @@
 				DE37925822F2DEB700A75581 /* HomeView.swift in Sources */,
 				DE37924822F2DDEC00A75581 /* HomeViewController.swift in Sources */,
 				DE37926822F3225E00A75581 /* MovieCell.swift in Sources */,
+				DE37926E22F4296D00A75581 /* PreviewMovieCell.swift in Sources */,
+				DE37927322F494EE00A75581 /* TopBarView.swift in Sources */,
 				DE37926622F31F3700A75581 /* HomeCell.swift in Sources */,
 				DE37926222F2F86100A75581 /* GradientView.swift in Sources */,
+				DE37927122F46EDC00A75581 /* PlayButton.swift in Sources */,
 				DE37926A22F32B6400A75581 /* Section.swift in Sources */,
 				DE37925C22F2E3B400A75581 /* HeaderReusableView.swift in Sources */,
 				DE37924622F2DDEC00A75581 /* AppDelegate.swift in Sources */,
+				DE37926C22F4210700A75581 /* MovieViewModel.swift in Sources */,
 				DE37925F22F2E83700A75581 /* Movie.swift in Sources */,
 				DE37926422F3185400A75581 /* NetworkingManager.swift in Sources */,
 			);

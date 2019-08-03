@@ -8,7 +8,15 @@
 
 import Foundation
 
+enum SectionName: String {
+  case preview = "Anteprime"
+  case popular = "I più visti"
+  case hot = "I titoli del momento"
+  case comedy = "Commedie"
+  case italianComedy = "Commedie italiane"
+}
+
 struct Section {
-  let title: String
+  let title: SectionName
   let movies: [Movie]
 }

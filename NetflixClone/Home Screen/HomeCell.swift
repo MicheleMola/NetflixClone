@@ -19,7 +19,7 @@ class HomeCell: UICollectionViewCell {
   
   var section: Section? {
     didSet {
-      collectionView.reloadData()
+      self.configure()
     }
   }
   
@@ -40,6 +40,8 @@ class HomeCell: UICollectionViewCell {
   func setup() {
     self.collectionView.dataSource = self
     
+    self.collectionView.register(PreviewMovieCell.self, forCellWithReuseIdentifier: PreviewMovieCell.reusableID)
+    
     self.collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.reusableID)
     
     self.contentView.addSubview(sectionTitle)
@@ -49,15 +51,26 @@ class HomeCell: UICollectionViewCell {
   func style() {
     self.layout.scrollDirection = .horizontal
     
-    self.sectionTitle.text = "Anteprime"
     self.sectionTitle.textColor = .white
+    self.sectionTitle.font = UIFont.boldSystemFont(ofSize: 14)
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
   
     self.sectionTitle.frame.origin = CGPoint(x: 16, y: 8)
+    
+    self.collectionView.frame = CGRect(x: 0, y: 32, width: self.bounds.width, height: self.bounds.height - 24)
+    
+    self.layout.itemSize = CGSize(width: self.bounds.width / 4, height: self.bounds.width / 4)
+    self.layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+  }
+  
+  func configure() {
+    self.sectionTitle.text = self.section?.title.rawValue
     self.sectionTitle.sizeToFit()
+    
+    self.collectionView.reloadData()
   }
 }
 
@@ -67,8 +80,26 @@ extension HomeCell: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return UICollectionViewCell()
+    
+    guard let section = self.section else { fatalError() }
+    
+    switch section.title {
+    case .preview:
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewMovieCell.reusableID, for: indexPath) as? PreviewMovieCell else {
+        fatalError()
+      }
+      
+      cell.movie = self.section?.movies[indexPath.row]
+      
+      return cell
+    default:
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.reusableID, for: indexPath) as? MovieCell else {
+        fatalError()
+      }
+      
+      cell.movie = self.section?.movies[indexPath.row]
+      
+      return cell
+    }
   }
-  
-  
 }

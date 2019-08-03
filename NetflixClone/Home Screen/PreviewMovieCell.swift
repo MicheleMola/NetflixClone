@@ -1,17 +1,17 @@
 //
-//  MovieCell.swift
+//  PreviewMovieCell.swift
 //  NetflixClone
 //
-//  Created by Michele Mola on 01/08/2019.
+//  Created by Michele Mola on 02/08/2019.
 //  Copyright © 2019 Michele Mola. All rights reserved.
 //
 
 import UIKit
 import Kingfisher
 
-class MovieCell: UICollectionViewCell {
+class PreviewMovieCell: UICollectionViewCell {
   
-  static let reusableID = "MovieCell"
+  static let reusableID = "PreviewMovieCell"
   
   let posterImageView = UIImageView()
   
@@ -38,12 +38,18 @@ class MovieCell: UICollectionViewCell {
   
   func style() {
     self.posterImageView.contentMode = .scaleAspectFill
+    
+    self.posterImageView.layer.borderWidth = 1.0
+    self.posterImageView.layer.borderColor = UIColor.orange.cgColor
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
     
     self.posterImageView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+    
+    self.posterImageView.layer.masksToBounds = true
+    self.posterImageView.layer.cornerRadius = self.bounds.width / 2
   }
   
   func configure() {
