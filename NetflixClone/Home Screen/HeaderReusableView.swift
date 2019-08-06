@@ -14,7 +14,7 @@ class HeaderReusableView: UICollectionReusableView {
   
   let coverImageView = UIImageView()
   let titleLabel = UILabel()
-  let addButton = UIButton(type: .contactAdd)
+  let addButton = UIButton(type: .custom)
   let playButton = PlayButton()
   let infoButton = UIButton(type: .detailDisclosure)
   let genresLabel = UILabel()
@@ -58,9 +58,11 @@ class HeaderReusableView: UICollectionReusableView {
   private func style() {
     self.backgroundColor = .black
     
-    self.addButton.tintColor = .white
+    let addButtonImage = UIImage(named: "plus")
+    self.addButton.setImage(addButtonImage, for: .normal)
+    
     self.infoButton.tintColor = .white
-  
+
     self.genresLabel.text = "Genitori - Crisi di mezza età - New York - Film di Hollywood"
     self.genresLabel.textColor = .white
     self.genresLabel.font = UIFont.boldSystemFont(ofSize: 10)
@@ -72,12 +74,14 @@ class HeaderReusableView: UICollectionReusableView {
     self.myListLabel.textColor = .gray
     self.myListLabel.text = "La mia lista"
     self.myListLabel.font = UIFont.boldSystemFont(ofSize: 8)
-    self.myListLabel.sizeToFit()
+//    self.myListLabel.sizeToFit()
     
     self.infoLabel.textColor = .gray
     self.infoLabel.text = "Info"
     self.infoLabel.font = UIFont.boldSystemFont(ofSize: 8)
     self.infoLabel.sizeToFit()
+    
+    self.gradientView.changeGradient(colors: [UIColor.black.cgColor, UIColor.clear.cgColor, UIColor.black.cgColor], locations: [0, 0.5, 1])
   }
   
   override func layoutSubviews() {
@@ -86,16 +90,32 @@ class HeaderReusableView: UICollectionReusableView {
     self.coverImageView.frame = self.bounds
     
     self.gradientView.frame = self.bounds
-    self.gradientView.changeGradient(colors: [UIColor.clear.cgColor, UIColor.black.cgColor, UIColor.black.cgColor], locations: [0, 0.9, 1])
     
-    self.addButton.frame.origin = CGPoint(x: 32, y: self.bounds.maxY - 60)
-    self.myListLabel.center = CGPoint(x: self.addButton.frame.midX, y: self.addButton.frame.maxY + 10)
+    self.addButton.pin
+      .left().marginLeft(32)
+      .top().marginTop(self.bounds.maxY - 60)
+      .width(16)
+      .height(16)
     
-    self.infoButton.frame.origin = CGPoint(x: self.bounds.maxX - 54, y: self.bounds.maxY - 60)
-    self.infoLabel.center = CGPoint(x: self.infoButton.frame.midX, y: self.infoButton.frame.maxY + 10)
+    self.myListLabel.pin
+      .below(of: self.addButton, aligned: .center).marginTop(6)
+      .sizeToFit()
     
-    self.playButton.frame.size = CGSize(width: self.bounds.width / 3, height: 32)
-    self.playButton.center = CGPoint(x: self.bounds.midX, y: self.bounds.maxY - 50)
+    self.infoButton.pin
+      .right().marginRight(32)
+      .top().marginTop(self.bounds.maxY - 60)
+      .width(16)
+      .height(16)
+    
+    self.infoLabel.pin
+      .below(of: self.infoButton, aligned: .center).marginTop(6)
+      .sizeToFit()
+    
+    self.playButton.pin
+      .hCenter()
+      .top(to: self.infoButton.edge.top)
+      .width(self.bounds.width / 3)
+      .height(32)
     
     self.genresLabel.center = CGPoint(x: self.bounds.midX, y: self.bounds.maxY - 120)
   }

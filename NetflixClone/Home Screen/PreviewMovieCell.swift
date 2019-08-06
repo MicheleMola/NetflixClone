@@ -46,7 +46,11 @@ class PreviewMovieCell: UICollectionViewCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     
-    self.posterImageView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+    self.posterImageView.pin
+      .left()
+      .top()
+      .width(self.bounds.width)
+      .height(self.bounds.width)
     
     self.posterImageView.layer.masksToBounds = true
     self.posterImageView.layer.cornerRadius = self.bounds.width / 2

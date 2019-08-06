@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum Direction {
-  case top
-  case bottom
-}
-
 class HomeView: UIView {
   
   let collectionView: UICollectionView
@@ -28,11 +23,13 @@ class HomeView: UIView {
     }
   }
   
-  var topBarHeight: CGFloat = 80 {
+  var topBarYPosition: CGFloat = 0 {
     didSet {
       self.animateTopBar()
     }
   }
+  
+  var didSelectMovie: ((Movie, String) -> ())?
   
   override init(frame: CGRect) {
     self.layout = UICollectionViewFlowLayout()
@@ -60,7 +57,8 @@ class HomeView: UIView {
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                  withReuseIdentifier: HeaderReusableView.reusableID)
     
-    self.collectionView.register(HomeCell.self, forCellWithReuseIdentifier: HomeCell.reusableID)
+    self.collectionView.register(HomeCell.self,
+                                 forCellWithReuseIdentifier: HomeCell.reusableID)
     
     self.addSubview(self.collectionView)
     self.addSubview(self.topBarView)
@@ -68,6 +66,8 @@ class HomeView: UIView {
   
   private func style() {
     self.topBarView.clipsToBounds = true
+    
+    self.topBarView.isHiddenBlurView = true    
   }
   
   override func layoutSubviews() {
@@ -76,35 +76,60 @@ class HomeView: UIView {
     self.collectionView.frame = self.bounds
     self.collectionView.contentInsetAdjustmentBehavior = .never
     
-    self.layout.headerReferenceSize = CGSize(width: self.bounds.width, height: self.bounds.height * 0.7)
-    self.layout.itemSize = CGSize(width: self.bounds.width, height: 150)
-    self.layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+    self.layout.headerReferenceSize = CGSize(width: self.bounds.width,
+                                             height: self.bounds.height * 0.7)
+    self.layout.itemSize = CGSize(width: self.bounds.width,
+                                  height: 180)
     
-    self.topBarView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.topBarHeight)
+    self.layout.sectionInset = UIEdgeInsets(top: 0,
+                                            left: 0,
+                                            bottom: 16,
+                                            right: 0)
+    
+    self.topBarView.frame = CGRect(x: 0,
+                                   y: self.topBarYPosition,
+                                   width: self.bounds.width,
+                                   height: 80)
   }
   
   func animateTopBar() {
-    self.setNeedsLayout()
+    self.layoutIfNeeded()
     UIView.animate(withDuration: 0.3) { [unowned self] in
+      self.topBarView.frame = CGRect(x: 0,
+                                     y: self.topBarYPosition,
+                                     width: self.bounds.width,
+                                     height: 80)
       self.layoutIfNeeded()
     }
+  }
+  
+  func didSelect(_ movie: Movie, heroId: String) {
+    didSelectMovie?(movie, heroId)
   }
 }
 
 extension HomeView: UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_ collectionView: UICollectionView,
+                      numberOfItemsInSection section: Int) -> Int {
     return self.titles.count
   }
   
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+  func collectionView(_ collectionView: UICollectionView,
+                      cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.reusableID, for: indexPath) as? HomeCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.reusableID,
+                                                        for: indexPath) as? HomeCell else {
       fatalError()
     }
     
     let title = self.titles[indexPath.row]
-    let section = Section(title: title, movies: self.movies)
+    
+    let shuffledMovies = self.movies.shuffled()
+    let section = Section(title: title,
+                          movies: shuffledMovies)
     cell.section = section
+    
+    cell.movieDidSelect = self.didSelect
     
     return cell
   }
@@ -129,15 +154,15 @@ extension HomeView: UICollectionViewDelegate {}
 
 extension HomeView: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let translation = scrollView.panGestureRecognizer.translation(in: self.collectionView)
+    let translation = scrollView.panGestureRecognizer.translation(in: self)
     
     let offsetY = scrollView.contentOffset.y
     
-    if offsetY <= 0 { return }
-        
-    let direction: Direction = translation.y > 0 || offsetY < 50 ? .top : .bottom
+    self.topBarView.isHiddenBlurView = offsetY < 50 ? true : false
     
-    self.topBarHeight = direction == .top ? 80 : 0
+    if offsetY <= 0 { return }
+    
+    self.topBarYPosition = translation.y > 0 || offsetY < 50 ? 0 : -80
   }
 }
 

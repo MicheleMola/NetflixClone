@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 
 class HomeCell: UICollectionViewCell {
   
@@ -22,6 +23,8 @@ class HomeCell: UICollectionViewCell {
       self.configure()
     }
   }
+  
+  var movieDidSelect: ((Movie, String) -> ())?
   
   override init(frame: CGRect) {
     self.layout = UICollectionViewFlowLayout()
@@ -39,6 +42,7 @@ class HomeCell: UICollectionViewCell {
   
   func setup() {
     self.collectionView.dataSource = self
+    self.collectionView.delegate = self
     
     self.collectionView.register(PreviewMovieCell.self, forCellWithReuseIdentifier: PreviewMovieCell.reusableID)
     
@@ -46,6 +50,7 @@ class HomeCell: UICollectionViewCell {
     
     self.contentView.addSubview(sectionTitle)
     self.contentView.addSubview(collectionView)
+    
   }
   
   func style() {
@@ -60,9 +65,13 @@ class HomeCell: UICollectionViewCell {
   
     self.sectionTitle.frame.origin = CGPoint(x: 16, y: 8)
     
-    self.collectionView.frame = CGRect(x: 0, y: 32, width: self.bounds.width, height: self.bounds.height - 24)
+    self.collectionView.pin
+      .top(to: self.sectionTitle.edge.bottom)
+      .left()
+      .width(self.bounds.width)
+      .height(self.bounds.height)
     
-    self.layout.itemSize = CGSize(width: self.bounds.width / 4, height: self.bounds.width / 4)
+    self.layout.itemSize = CGSize(width: self.bounds.width / 4, height: self.bounds.height - 32)
     self.layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
   }
   
@@ -71,6 +80,10 @@ class HomeCell: UICollectionViewCell {
     self.sectionTitle.sizeToFit()
     
     self.collectionView.reloadData()
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
   }
 }
 
@@ -101,5 +114,17 @@ extension HomeCell: UICollectionViewDataSource {
       
       return cell
     }
+  }
+}
+
+extension HomeCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let movie = self.section?.movies[indexPath.row] else { return }
+    
+    let cell = collectionView.cellForItem(at: indexPath)
+    let heroId = "moviePoster.\(indexPath.row).\(self.hash)"
+    cell?.hero.id = heroId
+    
+    movieDidSelect?(movie, heroId)
   }
 }

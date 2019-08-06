@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import Hero
 
 class HomeViewController: UIViewController {
   
-  let homeView = HomeView()
   let networkingManager = NetworkingManager()
   
   init() {
@@ -27,19 +27,37 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.setup()
+  }
+  
+  func setup() {
     self.getMovies()
+    
+    (self.view as! HomeView).didSelectMovie = didSelect
+    
   }
   
   private func getMovies() {
-    networkingManager.fetchAllPopularMovies { results in
+    self.networkingManager.fetchAllPopularMovies { results in
       if let movies = results {
-        self.homeView.movies = movies
+        (self.view as! HomeView).movies = movies
       }
     }
   }
 
   override func loadView() {
+    let homeView = HomeView()
     self.view = homeView
+  }
+  
+  func didSelect(_ movie: Movie, heroId: String) {
+    let detailViewController = DetailViewController()
+    
+//    detailViewController.hero.isEnabled = true
+    detailViewController.heroId = heroId
+    detailViewController.movie = movie
+    
+    self.navigationController?.pushViewController(detailViewController, animated: true)
   }
 
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,12 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let homeViewController = HomeViewController()
     
+    let navigationController = UINavigationController(rootViewController: homeViewController)
+    navigationController.isNavigationBarHidden = true
+    navigationController.hero.isEnabled = true
+    navigationController.hero.navigationAnimationType = .none
+    
     let tabBarController = UITabBarController()
     tabBarController.tabBar.tintColor = .white
     tabBarController.tabBar.barTintColor = .black
     tabBarController.tabBar.isTranslucent = false
-    tabBarController.viewControllers = [homeViewController]
-    
+    tabBarController.viewControllers = [navigationController]
+    tabBarController.hero.isEnabled = true
+        
     let w = UIWindow()
     w.rootViewController = tabBarController
     self.window = w

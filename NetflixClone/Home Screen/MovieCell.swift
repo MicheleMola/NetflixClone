@@ -38,6 +38,7 @@ class MovieCell: UICollectionViewCell {
   
   func style() {
     self.posterImageView.contentMode = .scaleAspectFill
+    self.posterImageView.clipsToBounds = true
   }
   
   override func layoutSubviews() {

@@ -11,12 +11,14 @@ import UIKit
 struct Movie {
   let title: String
   let posterPath: String
+  let overview: String
 }
 
 extension Movie: Codable {
   private enum CodingKeys: String, CodingKey {
     case title
     case posterPath = "poster_path"
+    case overview
   }
 }
 
